@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/demo-todo.css">
+    <script src="js/vue-2.3.4.js"></script>
+</head>
+<body>
+    <div class="page-top">
+        <div class="page-content">
+            <h2>任务计划列表</h2>
+        </div>
+    </div>
+    <div class="main">
+        <h3 class="big-title">添加任务：</h3>
+        <input 
+            placeholder="例如：吃饭睡觉打豆豆；    提示：+回车即可添加任务" 
+            class="task-input" 
+            type="text"
+            v-model="todo"
+            v-on:keyup.enter="addTodo"
+        />
+        <ul class="task-count" v-show="list.length">
+            <li>{{noCheckedLength}}个任务未完成</li>
+            <li class="action">
+                <a class="active" href="#all">所有任务</a>
+                <a href="#unfinished">未完成的任务</a>
+                <a href="#finished">完成的任务</a>
+            </li>
+        </ul>
+        <h3 class="big-title">任务列表：</h3>
+        <div class="tasks">
+            <span class="no-task-tip" v-show="!list.length">还没有添加任何任务</span>
+            <ul class="todo-list">
+                <li class="todo" :class="{completed: item.isChecked,editing:item===editorTodos}" v-for="item in filteredList" >
+                    <div class="view">
+                        <input class="toggle" type="checkbox" v-model="item.isChecked"/>
+                        <label @dblclick="editorTodo(item)">{{ item.title }}</label>
+                        <button class="destroy" @click="deleteTodo(item)"></button>
+                    </div>
+                    <input 
+                        v-focus="editorTodos===item" 
+                        class="edit" 
+                        type="text" 
+                        v-model="item.title"
+                        @blur="editorTodoed(item)"
+                        @keyup.enter="editorTodoed(item)"
+                        @keyup.esc="cancleTodo(item)"
+                    />
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+        //本地存储
+        var store ={
+            save(key,value){
+                localStorage.setItem(key,JSON.stringify(value));
+            },
+            fetch(key){
+                return JSON.parse(localStorage.getItem(key)) || [];
+            }
+        }
+        var list=store.fetch("paopao-watch12");
+
+        //hash 声明的过滤函数
+        var filter={
+            all:function(list){
+                return list;
+            },
+            finished:function(list){
+                return list.filter(function(item){
+                    return item.isChecked;
+                })
+            },
+            unfinished:function(list){
+                return list.filter(function(item){
+                    return !item.isChecked;
+                })
+            }
+        }
+        
+        //创建vm实例
+        var vm=new Vue({
+            el:".main",
+            data:{
+                list:list,
+                todo:"",
+                editorTodos:"", //记录正在编辑的todo这一项
+                beforeTitle:"",  //记录编辑之前的title
+                visibility:"all"
+            },
+            watch:{
+                list:{
+                    handler:function(){
+                        store.save("paopao-watch12",this.list);
+                    },
+                    deep:true
+                }
+            },
+            computed:{
+
+                //未完成任务个数
+                noCheckedLength:function(){
+                    return this.list.filter(function(item){  
+                        return !item.isChecked
+                    }).length
+                },
+
+                filteredList:function(){
+
+                    //找到过滤函数的话，返回过滤结果，没找到的话 返回所有数据
+                    return filter[this.visibility] ? filter[this.visibility](list) : list;
+                }
+            },  
+            methods:{
+                addTodo(ev){  //添加任务
+                    this.list.push({
+                        title:this.todo,
+                        isChecked:false
+                    });
+                    this.todo="";
+                },
+                deleteTodo(todo){
+                    var index = this.list.indexOf(todo);
+                    this.list.splice(index,1);
+                },
+                editorTodo(todo){
+                    this.beforeTitle=todo.title;
+                    this.editorTodos=todo;
+                },
+                editorTodoed(todo){
+                    this.editorTodos=''; //this是指创建的vue实例
+                },
+                cancleTodo(todo){
+                    console.log(todo);
+                    todo.title=this.beforeTitle; //title值变为之前的值
+
+                    this.beforeTitle='';  //之前记录的值已经没用 清空   
+
+                    this.editorTodos='';  //input隐藏 div显示
+                }
+            },
+            directives:{
+                "focus":{
+                    update(el,binding){
+                        if(binding.value){
+                            el.focus();
+                        }
+                    }
+
+                }
+            }
+        });
+
+    //hash过滤
+    function watchHashChange(){
+        var hash=window.location.hash.slice(1);
+        vm.visibility=hash;
+    }
+    watchHashChange();
+    window.addEventListener("hashchange",watchHashChange);
+    </script>
+</body>
+</html>

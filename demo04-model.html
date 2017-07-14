@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script>
+        window.onload=function(){
+            new Vue({
+            el: '#box', 
+            data: {
+            msg: 'Hello paoapo!',
+            msg2:'Ronny,sweetie',
+            arr: ['apple','orange','banana','pear'],
+            json: {a:'apple',b:'orange',c:'banana',d:'pear'}
+            }
+        });
+
+            var box2=new Vue({
+            el: '#box2', 
+            data: {
+                msg: 'Hello paoapo!',
+                msg2: 'Ronny,sweetie',
+                fruit: [
+                     {name:'apple'},
+                     {name:'orange'},
+                     {name:'banana'},
+                     {name:'pear'}
+                ]
+            }
+        });
+        };
+    </script>
+</head>
+<body>
+    <div id="box">
+        <input type="text" v-model="msg">
+        <p>{{msg}}</p>
+        <p>{{msg2}}</p>
+        <p>{{arr}}</p>
+        <p>{{json}}</p>
+    </div>
+    <hr>
+    <div id="box2">
+        <ul>
+            <li v-for="value in fruit">
+               {{value.name}} 
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script>
+        window.onload=function(){
+            var box = new Vue({
+            el: '#box',
+            data: {
+                seen:false
+            }
+        })
+        }
+    </script>
+</head>
+<body>
+    <div id="box">
+        <p v-if="seen"><!--  v-if="false" -->
+            honey,你能看到我吗？
+        </p>
+    </div>
+</body>
+</html>

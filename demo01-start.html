@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+</head>
+<body>
+    <div id="box">
+        {{msg}}
+    </div>
+    <script>
+        let data={
+            msg:"hello,paoapo!"
+        }
+            var box = new Vue({
+                el: '#box', //选择器 可以是 类名、标签名 比如：.box、 body
+                data:data
+            });
+
+    </script>
+</body>
+</html>

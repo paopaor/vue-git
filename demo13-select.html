@@ -1,0 +1,50 @@
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/demo-todo.css">
+    <script src="js/vue-2.3.4.js"></script>
+</head>
+<body>
+    <section class="wrap">
+        <div class="searchIpt clearfix">
+            <div class="clearfix">
+                <input type="text" class="keyWord" value="">
+                <input type="button" value="go">
+            </div>
+            <ul class="list">
+                <li>paopao</li>
+                <li>ronny</li>
+                <li>saron</li>
+                <li>beauty</li>
+                <li>nice</li>
+            </ul>
+        </div>
+    </section>
+    <script type="text/javascript">
+        var list = [];
+        
+        new Vue({
+            el:".main",
+            data:{
+                list:list,
+                todo:""
+            },
+            methods:{
+                addTodo(ev){  //添加任务
+                    this.list.push({
+                        title:this.todo,
+                        isChecked:false
+                    });
+                    this.todo="";
+                },
+                deleteTodo(todo){
+                    var index = this.list.indexOf(todo);
+                    this.list.splice(index,1);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

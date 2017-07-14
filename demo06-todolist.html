@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script>
+        window.onload=function(){
+            new Vue({
+            el: '#box', 
+            data:{
+                myData: [
+                /*{name:'paopao',age:'20'},
+                {name:'Ronny',age:'18'}*/],
+                username:'',
+                age:'',
+                nowIndex:'-100'
+            },
+            methods:{
+                add:function(){
+                    this.myData.push({
+                        name:this.username,
+                        age:this.age
+                    })
+                    this.username='',
+                    this.age=''
+
+                },
+                deleteMsg:function(n){
+                    /*alert(00);*/
+                    if(n==-2){
+                        this.myData=[];
+                    }else{
+                    this.myData.splice(n,1);
+                    }
+                }
+            }
+           
+            
+        });
+
+        };
+    </script>
+</head>
+<body>
+    <div class="container" id="box" style="margin-top:30px;">
+        <div class="form-group row">
+            <label class="label-control col-sm-3 text-right">用户名：</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" placeholder="请输入用户名" v-model="username">
+            </div>
+        </div>
+        <div class="form-group row">
+
+            <label class="label-control col-sm-3 text-right">年龄：</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" placeholder="请输入年龄" v-model="age">
+            </div>
+        </div>
+        <div class="form-group text-center">
+            <a href="javascript:void(0);" class="btn btn-primary" v-on:click="add()">添加</a>
+            <button class="btn btn-danger" type="reset">重置</button>
+        </div>
+        <hr>
+
+        <table class="table table-bordered table-hover">
+            <caption><h3>表格</h3></caption>
+            <thead>
+                <th class="text-center">序号</th>
+                <th class="text-center">姓名</th>
+                <th class="text-center">年龄</th>
+                <th class="text-center">操作</th>
+            </thead>
+            <tbody>
+                <tr class="text-center" v-for="(item,index) in myData">
+                    <td>{{index+1}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.age}}</td>
+                    <td><a href="javascript:void(0);" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#remove" v-on:click="nowIndex=index">删除</a></td>
+                </tr>
+                <tr class="text-right" v-show="myData.length!=0" v-on:click="nowIndex=-2">
+                    <td colspan="4"><a href="javascript:void(0);" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#remove">删除全部</a></td>
+                </tr>
+                <tr class="text-center text-info" v-show="myData.length==0">
+                    <td colspan="4">
+                    <h4>暂无数据</h4>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div role="dialog" class="modal fade" id="remove" data-index="{{nowIndex}}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="javascript:void(0);" class="close" data-dismiss="modal">&times</a>
+                    <h4 class="title">提示</h4>
+                </div>
+                <div class="modal-body">
+                    确认要删除吗？
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary btn-sm" v-on:click="deleteMsg(nowIndex)">确定</a>
+                    <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-default btn-sm">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script>
+        window.onload=function(){
+            var box = new Vue({
+            el: '#box',
+            data: {
+            msg: '页面加载于'+new Date()
+            }
+        })
+        }
+    </script>
+</head>
+<body>
+    <div id="box">
+        <span v-bind:title="msg" style="cursor:pointer"><!--  v-开头得为指令信息 -->
+            鼠标悬停几秒查看信息！
+        </span>
+    </div>
+</body>
+</html>

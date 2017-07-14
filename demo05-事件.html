@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script>
+        window.onload=function(){
+            new Vue({
+            el: '#box', 
+            data: {
+                fruit: [
+                 {name:'apple'},
+                 {name:'orange'},
+                 {name:'banana'},
+                 {name:'pear'}]
+            },
+            methods:{
+                add:function(){
+                    this.fruit.push({name:'tomato'});
+                }/*,
+                remove:function(){
+                    this.fruit.remove({name:'tomato'});
+                }*/
+            }
+           
+            
+        });
+
+        };
+    </script>
+</head>
+<body>
+    <div id="box">
+        <input type="button" value="按钮" v-on:mouseover="add()">
+        <ul>
+            <li v-for="value in fruit">{{value.name}}</li>
+        </ul>
+    </div>
+    
+</body>
+</html>
